@@ -9,6 +9,16 @@
       <span>Findings</span>
       <v-icon>list</v-icon>
     </v-btn>
+
+    <!-- <v-btn @click="goTo('all-templates')" value="templates">
+      <span>Templates</span>
+      <v-icon>waves</v-icon>
+    </v-btn>
+
+    <v-btn @click="goTo('generate-document')" value="generation">
+      <span>Document generation</span>
+      <v-icon>create</v-icon>
+    </v-btn> -->
   </v-bottom-navigation>
 </template>
 

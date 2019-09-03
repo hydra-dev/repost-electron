@@ -4,7 +4,7 @@
     <v-divider></v-divider>
 
     <v-data-table :loading="loading" :headers="headers" :items="findings" class="elevation-1">
-      <template v-slot:items="props">
+      <template v-slot:item="props">
         <td>{{ props.item.id }}</td>
         <td class="text-xs">
           <span

@@ -1,0 +1,5 @@
+win:
+  target:
+    - target: nsis
+      arch: 
+        - x64

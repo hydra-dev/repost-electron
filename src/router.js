@@ -37,6 +37,21 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/ShowFindingComponent.vue')
     },
     {
+      path: '/template',
+      name: 'all-templates',
+      component: () => import(/* webpackChunkName: "about" */ './views/Templates/TemplatesTableComponent.vue')
+    },
+    {
+      path: '/template/create',
+      name: 'create-template',
+      component: () => import(/* webpackChunkName: "about" */ './views/Templates/CreateTemplateComponent.vue')
+    },
+    {
+      path: '/document/generate',
+      name: 'generate-document',
+      component: () => import(/* webpackChunkName: "about" */ './views/Document/GenerateDocumentComponent.vue')
+    },
+    {
       path: '/settings',
       name: 'settings',
       component: () => import(/* webpackChunkName: "about" */ './views/SettingsComponent.vue')

@@ -1,7 +1,15 @@
-import axios from 'axios';
 import fs from 'fs';
+import store from './store'
+import axios from 'axios';
 const instance = axios.create({
-    baseURL: process.env.VUE_APP_BASE_URL
+  timeout: 1000,
+})
+
+// Fetch the base url prior to every request
+instance.interceptors.request.use(request => {
+  const baseUrl = store.getters.getBaseUrl;
+  request.url = baseUrl + request.url;
+  return request; 
 })
 
 const FlexSearch = require("flexsearch");
@@ -61,7 +69,6 @@ export let findById = id => {
 
 export let resync = () => {
     console.log("Test")
-    console.log(process.env.VUE_APP_BASE_URL)
     instance.get('/api/v1/finding')
         .then(response => {
             indexFindings(response.data.data)
