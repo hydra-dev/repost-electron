@@ -7,7 +7,6 @@
 
 <script>
 import { EventBus } from "./../event-bus";
-import { setTimeout } from 'timers';
 
 export default {
   data() {

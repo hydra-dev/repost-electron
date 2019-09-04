@@ -41,7 +41,7 @@ export default {
 
   methods: {
     saveSettings() {
-      this.$store.commit("updateSettings", this.settings);
+      this.$store.dispatch("updateSettings", this.settings);
       EventBus.$emit('snackbar', {
           text: 'Settings have been stored'
       })

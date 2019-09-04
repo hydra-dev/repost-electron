@@ -9,19 +9,38 @@ import { EventBus } from './event-bus'
 Vue.use(Vuelidate)
 
 import axios from 'axios';
-const instance = axios.create({
-  timeout: 1000,
+
+/**
+ * We create two axios instances. One that catches every error 
+ * The other that does not. We need this second one, such that we can implement our own offline behavior. In some cases we have that
+ * in other cases, we just want to show a generic error message. 
+ */
+const uncaughtExceptionInstance = axios.create({
+  timeout: 5000,
 })
 
 // Fetch the base url prior to every request
-instance.interceptors.request.use(request => {
+uncaughtExceptionInstance.interceptors.request.use(request => {
+  const baseUrl = store.getters.getBaseUrl;
+  request.url = baseUrl + request.url;
+  return request; 
+})
+
+Vue.prototype.$uncaughtHttp = uncaughtExceptionInstance;
+
+const defaultInstance = axios.create({
+  timeout: 5000,
+})
+
+// Fetch the base url prior to every request
+defaultInstance.interceptors.request.use(request => {
   const baseUrl = store.getters.getBaseUrl;
   request.url = baseUrl + request.url;
   return request; 
 })
 
 // Set an interceptor for errors
-instance.interceptors.response.use(response => {
+defaultInstance.interceptors.response.use(response => {
   return response;
 }, error => {
   let errorMessage = 'Unknown error'
@@ -37,7 +56,7 @@ instance.interceptors.response.use(response => {
   return error;
 })
 
-Vue.prototype.$http = instance
+Vue.prototype.$http = defaultInstance
 
 Vue.config.productionTip = false
 

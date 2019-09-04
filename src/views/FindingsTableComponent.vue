@@ -4,22 +4,24 @@
     <v-divider></v-divider>
 
     <v-data-table :loading="loading" :headers="headers" :items="findings" class="elevation-1">
-      <template v-slot:item="props">
-        <td>{{ props.item.id }}</td>
+      <template v-slot:body="{ items }">
+        <tr v-for="item in items" :key="item.id">
+        <td>{{ item.id }}</td>
         <td class="text-xs">
           <span
-            v-if="getNumberOfLanguages(props.item) === 1"
-          >{{ props.item.name[getDefaultLanguage(props.item)] }}</span>
+            v-if="getNumberOfLanguages(item) === 1"
+          >{{ item.name[getDefaultLanguage(item)] }}</span>
           <span
-            v-if="getNumberOfLanguages(props.item) === 2"
-          >{{ props.item.name.en }} / {{props.item.name.nl}}</span>
+            v-if="getNumberOfLanguages(item) === 2"
+          >{{ item.name.en }} / {{item.name.nl}}</span>
         </td>
-        <td class="text-xs">{{Object.keys(props.item.name)}}</td>
+        <td class="text-xs">{{Object.keys(item.name)}}</td>
         <td class="text-xs">
-          <v-btn @click="editFinding(props.item)" fab dark small color="primary">
+          <v-btn @click="editFinding(item)" fab dark small color="primary">
             <v-icon dark>edit</v-icon>
           </v-btn>
         </td>
+        </tr>
       </template>
     </v-data-table>
 

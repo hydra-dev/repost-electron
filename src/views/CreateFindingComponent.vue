@@ -98,6 +98,7 @@ import {
 } from "vuelidate/lib/validators";
 import showdown from "showdown";
 import { EventBus } from "../event-bus";
+import { extractVariables } from '../helpers/text'
 
 export default {
   data() {
@@ -196,16 +197,7 @@ export default {
   watch: {
     form: {
       handler() {
-        const regex = /\${([^}]+)}/gm; // Captures everything between ${}
-        let match = regex.exec(this.findingText);
-        this.variables = [];
-        while (match !== null) {
-          const variable = match[1];
-          if (this.variables.indexOf(variable) === -1) {
-            this.variables.push(variable);
-          }
-          match = regex.exec(this.findingText);
-        }
+          this.variables = extractVariables(this.findingText);
       },
       deep: true
     },

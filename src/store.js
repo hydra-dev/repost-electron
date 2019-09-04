@@ -1,18 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import VuexPersistence from 'vuex-persist'
+import { createPersistedState, createSharedMutations } from "vuex-electron"
+
 
 Vue.use(Vuex)
-
-const vuexLocal = new VuexPersistence({
-  // storage: window.localStorage
-})
 
 export default new Vuex.Store({
   state: {
     auth: null,
     settings: {
-      api_url: null
+      api_url: 'https://repost-demo.appspot.com'
     }
   },
   getters: {
@@ -30,6 +27,12 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    updateSettings(context, settings) {
+      context.commit('updateSettings', settings);
+    }
   },
-  plugins: [vuexLocal.plugin]
+  plugins: [
+    createPersistedState(),
+    createSharedMutations()
+  ]
 })

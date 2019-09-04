@@ -4,10 +4,14 @@ import axios from 'axios';
 const instance = axios.create({
   timeout: 1000,
 })
+const electron = require('electron');
+const userDataPath = (electron.app || electron.remote.app).getPath('userData');
+
 
 // Fetch the base url prior to every request
 instance.interceptors.request.use(request => {
   const baseUrl = store.getters.getBaseUrl;
+  console.log(baseUrl)
   request.url = baseUrl + request.url;
   return request; 
 })
@@ -29,7 +33,7 @@ const index = new FlexSearch(
         }
     });
 
-const INDEX_FILE_NAME = 'repost-index'
+const INDEX_FILE_NAME = `${userDataPath}/repost-index`;
 
 let exportIndexToFile = () => {
     fs.writeFileSync(INDEX_FILE_NAME, index.export())
