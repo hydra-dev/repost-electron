@@ -1,17 +1,13 @@
 <template>
   <div v-if="finding">
     <h1>{{finding.name[selectedLanguage]}}</h1>
-    <i v-if="source === 'online'">Last update {{finding.updated_at}}</i>
-    <i v-else>Fetched from local database</i>
+      <i v-if="source === 'online'">Last update {{finding.updated_at}}</i>
+      <i v-else>Fetched from local database</i>
     <v-divider></v-divider>
-    <b>Finding</b>
-    <span v-html="findingMd"></span>
-    <v-divider />
-    <b>Risk</b>
-    <span v-html="riskMd"></span>
-    <v-divider />
-    <b>Recommendation</b>
-    <span v-html="recommendationMd"></span>
+
+    <FindingTextBlockComponent title="Finding" :body="findingText" />
+    <FindingTextBlockComponent title="Risk" :body="riskText" />
+    <FindingTextBlockComponent title="Recommendation" :body="recommendationText" />
 
     <SubstituteVariablesDialogComponent :dialog="showSubstituteDialog" @hideDialog="hideSubstituteDialog" v-model="variables"/>
 
@@ -26,11 +22,11 @@
 </template>
 
 <script>
-import showdown from "showdown";
 import SubstituteVariablesDialogComponent from './Dialogs/SubstituteVariablesDialogComponent'
 import { findById } from './../local-finding-index'
 import { EventBus } from './../event-bus'
 import { extractVariables } from './../helpers/text'
+import FindingTextBlockComponent from './../components/FindingTextBlockComponent'
 
 export default {
   data() {
@@ -47,24 +43,23 @@ export default {
   },
 
   components: {
-    SubstituteVariablesDialogComponent
+    SubstituteVariablesDialogComponent,
+    FindingTextBlockComponent
   },
 
   computed:{
-      findingMd(){
-          if (this.finding.finding) return this.convertToMarkdown(this.finding.finding[this.selectedLanguage])
-          return ""
+
+      findingText(){
+        return this.finding.finding[this.selectedLanguage]
       },
 
-      riskMd(){
-          if (this.finding.risk) return this.convertToMarkdown(this.finding.risk[this.selectedLanguage])
-          return ""
+      riskText(){
+        return this.finding.risk[this.selectedLanguage]
       },
 
-      recommendationMd(){
-          if (this.finding.recommendation) return this.convertToMarkdown(this.finding.recommendation[this.selectedLanguage])
-          return ""
-      }
+      recommendationText(){
+        return this.finding.recommendation[this.selectedLanguage]
+      },
   },
 
   watch: {
@@ -79,11 +74,6 @@ export default {
   },
 
   methods: {
-      convertToMarkdown(text){
-        const converter = new showdown.Converter();
-        return converter.makeHtml(text); 
-      },
-
       substituteVariablesDialog(){
         this.showSubstituteDialog = true;
       },

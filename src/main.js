@@ -6,6 +6,11 @@ import store from './store'
 import Vuelidate from 'vuelidate'
 import { EventBus } from './event-bus'
 
+import VueClipboard from 'vue-clipboard2'
+
+VueClipboard.config.autoSetContainer = true // add this line
+Vue.use(VueClipboard)
+
 Vue.use(Vuelidate)
 
 import axios from 'axios';

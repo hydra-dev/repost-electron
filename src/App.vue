@@ -11,11 +11,10 @@
       <v-container fluid>
         <router-view />
       </v-container>
-
-      <BottomNavigationComponent />
-      <LoadingOverlayComponent />
       <GlobalSnackbarComponent />
     </v-content>
+    <BottomNavigationComponent />
+    <LoadingOverlayComponent />
   </v-app>
 </template>
 

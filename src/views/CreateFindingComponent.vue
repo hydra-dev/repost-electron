@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Create finding</h3>
+    <h3>{{buttonLabel}} finding</h3>
     <v-select
       :items="languages"
       return-object
@@ -83,7 +83,7 @@
     </v-btn>
 
     <v-btn color="blue-grey" class="white--text" :disabled="$v.$invalid" @click="saveFinding">
-      Save
+      {{buttonLabel}}
       <v-icon right dark>add</v-icon>
     </v-btn>
   </div>
@@ -98,7 +98,7 @@ import {
 } from "vuelidate/lib/validators";
 import showdown from "showdown";
 import { EventBus } from "../event-bus";
-import { extractVariables } from '../helpers/text'
+import { extractVariables } from "../helpers/text";
 
 export default {
   data() {
@@ -197,7 +197,7 @@ export default {
   watch: {
     form: {
       handler() {
-          this.variables = extractVariables(this.findingText);
+        this.variables = extractVariables(this.findingText);
       },
       deep: true
     },
@@ -212,6 +212,7 @@ export default {
             that.selectedTags.splice(idx, 1);
             that.selectedTags.push(response.data);
             that.addUniqueTags(response.data);
+            this.fetchTags();
             this.tagLoading = false;
           });
         } else {
@@ -240,7 +241,7 @@ export default {
       if (this.editMode) {
         this.$http
           .patch(`/api/v1/finding/${this.findingId}`, this.form)
-          .then( () => {
+          .then(() => {
             EventBus.$emit("stopLoading");
             this.$router.push({ name: "all-findings" });
           });
@@ -260,6 +261,12 @@ export default {
           that.form[key][language.value] = object[language.value];
         }
       });
+    },
+
+    fetchTags() {
+      this.$http.get("/api/v1/tag").then(response => {
+        this.tags = response.data;
+      });
     }
   },
 
@@ -270,20 +277,28 @@ export default {
       }\n${this.form.recommendation[this.selectedLanguage]}`;
     },
 
-    previewEditToggleButtonText(){
+    previewEditToggleButtonText() {
       if (this.previewMode) {
-        return "Edit"
+        return "Edit";
       }
 
-      return "Preview"
+      return "Preview";
     },
 
-    previewEditToggleButtonIcon(){
-      if (this.previewMode) {
-        return "edit"
+    buttonLabel(){
+      if (this.editMode) {
+        return "Edit";
       }
 
-      return "pageview"
+      return "Create";
+    },
+
+    previewEditToggleButtonIcon() {
+      if (this.previewMode) {
+        return "edit";
+      }
+
+      return "pageview";
     },
 
     selectedLanguage() {
@@ -336,7 +351,7 @@ export default {
 
   mounted() {
     const params = this.$route.params;
-    if ('id' in params) {
+    if ("id" in params) {
       this.editMode = true;
       EventBus.$emit("startLoading");
       let that = this;
@@ -356,9 +371,7 @@ export default {
       });
     }
 
-    this.$http.get("/api/v1/tag").then(response => {
-      this.tags = response.data;
-    });
+    this.fetchTags();
   }
 };
 </script>

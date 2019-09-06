@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation v-model="bottomNav" fixed>
+  <v-bottom-navigation app v-model="bottomNav" horizontal grow absolute>
     <v-btn @click="goTo('search')" value="search">
       <span>Search</span>
       <v-icon>search</v-icon>
