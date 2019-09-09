@@ -287,7 +287,7 @@ export default {
 
     buttonLabel(){
       if (this.editMode) {
-        return "Edit";
+        return "Update";
       }
 
       return "Create";

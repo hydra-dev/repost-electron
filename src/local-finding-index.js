@@ -2,7 +2,7 @@ import fs from 'fs';
 import store from './store'
 import axios from 'axios';
 const instance = axios.create({
-  timeout: 1000,
+  timeout: 5000,
 })
 const electron = require('electron');
 const userDataPath = (electron.app || electron.remote.app).getPath('userData');
@@ -76,6 +76,10 @@ export let resync = () => {
     instance.get('/api/v1/finding')
         .then(response => {
             indexFindings(response.data.data)
+
+            // Persist in store when the last sync was
+            store.dispatch('updateLastSyncAt');
+
         }, err => {
             console.log(err)
         })

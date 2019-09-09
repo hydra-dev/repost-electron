@@ -39,4 +39,4 @@ docker run --rm -ti  --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NP
 
 Next run ```yarn```
 
-For windows run ```yarn build:electron --win```
+For windows run ```yarn electron:build --win```

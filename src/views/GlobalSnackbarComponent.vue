@@ -7,6 +7,7 @@
 
 <script>
 import { EventBus } from "./../event-bus";
+const { ipcRenderer } = require("electron");
 
 export default {
   data() {
@@ -19,8 +20,14 @@ export default {
 
   mounted() {
     EventBus.$on("snackbar", data => {
-        this.text = data.text;
-        this.snackbar = true;
+      this.text = data.text;
+      this.snackbar = true;
+    });
+
+    ipcRenderer.on("snackbar", (event, data) => {
+      console.log(data);
+      this.text = data.text;
+      this.snackbar = true;
     });
   }
 };

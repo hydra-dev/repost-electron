@@ -13,6 +13,7 @@
       </v-container>
       <GlobalSnackbarComponent />
     </v-content>
+    <UpdateAvailableDialogComponent />
     <BottomNavigationComponent />
     <LoadingOverlayComponent />
   </v-app>
@@ -22,6 +23,7 @@
 import LoadingOverlayComponent from "./views/LoadingOverlayComponent";
 import BottomNavigationComponent from "./views/BottomNavigationComponent";
 import GlobalSnackbarComponent from "./views/GlobalSnackbarComponent";
+import UpdateAvailableDialogComponent from "./views/Dialogs/UpdateAvailableDialogComponent";
 const { ipcRenderer } = require("electron");
 
 export default {
@@ -29,7 +31,8 @@ export default {
   components: {
     LoadingOverlayComponent,
     BottomNavigationComponent,
-    GlobalSnackbarComponent
+    GlobalSnackbarComponent,
+    UpdateAvailableDialogComponent
   },
   data() {
     return {

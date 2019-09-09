@@ -1,7 +1,8 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, Menu } from 'electron'
+import { app, protocol, BrowserWindow, Menu, ipcMain, ipcRenderer } from 'electron'
 import { resync } from './local-finding-index'
+import { checkForUpdate, downloadUpdate } from './helpers/update'
 import {
   createProtocol,
   installVueDevtools
@@ -41,6 +42,12 @@ function createWindow() {
           click() {
             win.webContents.send('settings')
             console.log("Prompt settings")  
+          }
+        },
+        {
+          label: `Repost desktop - ${app.getVersion()}`,
+          click() {
+            checkForUpdate(win)
           }
         },
         { label: 'Exit' }
@@ -93,7 +100,14 @@ app.on('ready', async () => {
       console.error('Vue Devtools failed to install:', e.toString())
     }
   }
+
   createWindow()
+
+  ipcMain.on('downloadUpdate', (sender, url) => {
+    downloadUpdate(win, url);
+  })
+
+  checkForUpdate(win);
 })
 
 // Exit cleanly on request from parent process in development mode.
